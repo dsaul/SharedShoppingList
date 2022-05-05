@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from './Dashboard.module.css';
 import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import Container from '@mui/material/Container';
@@ -10,52 +10,101 @@ import Deposits from '../tmp/Deposits';
 import Orders from '../tmp/Orders';
 import Copyright from '../components/Copyright';
 
+import StoreCard from '../components/Cards/StoreCard';
+import { IShoppingListItem } from '../data/ShoppingListItem';
+
 interface IDashboardProps {
-	
+
 };
 
-export default (props: IDashboardProps) => {
+export default function Dashboard(props: IDashboardProps) {
+
+	const [listItems, setListItems] = useState([
+		{
+			uuid: 'asd',
+			name: 'Chicken Tendies',
+			isPicked: false,
+			stores: ['Superstore', 'Safeway'],
+			departments: ['Meats'],
+		},
+		{
+			uuid: '1313',
+			name: 'Toilet Paper',
+			isPicked: false,
+			stores: ['Superstore'],
+			departments: ['Papers'],
+		},
+		{
+			uuid: '1212',
+			name: 'Fizzy Water',
+			isPicked: false,
+			stores: ['Superstore'],
+			departments: ['Drinks'],
+		},
+		{
+			uuid: '354adsadsf454',
+			name: 'BBQ Almonds',
+			isPicked: false,
+			stores: ['Safeway'],
+			departments: ['Candy'],
+		},
+	] as IShoppingListItem[]);
+
+	const onItemEdited = (uuid: string, newValue: IShoppingListItem): void => {
+
+		setListItems((old): IShoppingListItem[] => {
+			return old.map((item: IShoppingListItem) => {
+				if (item.uuid != uuid)
+					return item;
+
+				return newValue;
+			});
+		});
+
+
+
+	};
+
+
+	const onEditItem = (uuid: string): void => {
+		console.log('onEditItem', uuid);
+	}
+	
+	const onDeleteItems = (uuids: string[]): void => {
+		console.log('onDeleteItems', uuids);
+	}
+	
+	const addNewItem = (): void => {
+		console.log('addNewItem');
+	}
+
+
+	// Get unique stores.
+	const uniqueStores: string[] = [];
+	for (const item of listItems) {
+		for (const store of item.stores) {
+			if (uniqueStores.indexOf(store) == -1)
+				uniqueStores.push(store);
+		}
+	}
+
+	//console.log('uniqueStores', uniqueStores);
+
 	return (
 		<React.Fragment>
-			<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-				<Grid container spacing={3}>
-					{/* Chart */}
-					<Grid item xs={12} md={8} lg={9}>
-						<Paper
-							sx={{
-								p: 2,
-								display: 'flex',
-								flexDirection: 'column',
-								height: 240,
-							}}
-							>
-							<Chart />
-						</Paper>
-					</Grid>
-					{/* Recent Deposits */}
-					<Grid item xs={12} md={4} lg={3}>
-						<Paper
-							sx={{
-								p: 2,
-								display: 'flex',
-								flexDirection: 'column',
-								height: 240,
-							}}
-							>
-							<Deposits />
-						</Paper>
-					</Grid>
-					{/* Recent Orders */}
-					<Grid item xs={12}>
-						<Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-							<Orders />
-						</Paper>
-					</Grid>
-				</Grid>
-				<Copyright sx={{ pt: 4 }} />
-			</Container>
-			
-			<div>dashboard</div>
+			{uniqueStores.map((storeName) => {
+				return (
+					<StoreCard
+						key={storeName}
+						storeName={storeName}
+						items={listItems}
+						onItemEdited={onItemEdited}
+						onEditItem={onEditItem}
+						onDeleteItems={onDeleteItems}
+						addNewItem={addNewItem}
+					/>
+				);
+			})}
 		</React.Fragment>
 	);
 }

@@ -1,22 +1,17 @@
 import React from 'react';
-import './App.css';
 import { Routes, Route } from "react-router-dom";
 import Dashboard from './pages/Dashboard';
-import Settings from './pages/Settings';
+import About from './pages/About';
 import CssBaseline from '@mui/material/CssBaseline';
-
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-
 import Box from '@mui/material/Box';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-
 import Navigation from './components/Navigation';
 
 
@@ -48,10 +43,10 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 
-export default () => {
+export default function App() {
 	
 	
-	const [open, setOpen] = React.useState(true);
+	const [open, setOpen] = React.useState(false);
 	const toggleDrawer = () => {
 		setOpen(!open);
 	};
@@ -94,11 +89,11 @@ export default () => {
 								>
 								Dashboard
 							</Typography>
-							<IconButton color="inherit">
+							{/* <IconButton color="inherit">
 								<Badge badgeContent={4} color="secondary">
 									<NotificationsIcon />
 								</Badge>
-							</IconButton>
+							</IconButton> */}
 						</Toolbar>
 					</AppBar>
 					<Navigation isDrawerOpen={open} performToggleDrawer={toggleDrawer} />
@@ -119,7 +114,7 @@ export default () => {
 						
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
-							<Route path="/settings" element={<Settings />} />
+							<Route path="/about" element={<About />} />
 						</Routes>
 						
 						

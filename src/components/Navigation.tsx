@@ -1,11 +1,11 @@
 import React from 'react';
-import style from './Settings.module.css';
+import style from './Navigation.module.css';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import InfoIcon from '@mui/icons-material/Info';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import MuiDrawer from '@mui/material/Drawer';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -37,7 +37,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 				}),
 				width: theme.spacing(7),
 				[theme.breakpoints.up('sm')]: {
-					width: theme.spacing(9),
+					width: theme.spacing(7),
 				},
 			}),
 		},
@@ -50,7 +50,7 @@ interface INavigationProps {
 	performToggleDrawer: () => void;
 };
 
-export default (props: INavigationProps) => {
+export default function (props: INavigationProps) {
 	
 	
 	
@@ -73,20 +73,20 @@ export default (props: INavigationProps) => {
 				<RouterLink to="/" style={{textDecoration: 'inherit', color: 'inherit'}}>
 					<ListItemButton>
 						<ListItemIcon>
-							<DashboardIcon />
+							<ViewListIcon />
 						</ListItemIcon>
 						<ListItemText primary="Dashboard" />
 					</ListItemButton>
 				</RouterLink>
-				<RouterLink to="/settings" style={{textDecoration: 'inherit', color: 'inherit'}}>
+				<RouterLink to="/about" style={{textDecoration: 'inherit', color: 'inherit'}}>
 					<ListItemButton>
 						<ListItemIcon>
-							<ShoppingCartIcon />
+							<InfoIcon />
 						</ListItemIcon>
-						<ListItemText primary="Settings" />
+						<ListItemText primary="About" />
 					</ListItemButton>
 				</RouterLink>
-				<Divider sx={{ my: 1 }} />
+				{/* <Divider sx={{ my: 1 }} />
 				<ListSubheader component="div" inset>
 					Saved reports
 				</ListSubheader>
@@ -107,7 +107,7 @@ export default (props: INavigationProps) => {
 						<AssignmentIcon />
 					</ListItemIcon>
 					<ListItemText primary="Year-end sale" />
-				</ListItemButton>
+				</ListItemButton> */}
 			</List>
 		</Drawer>
 	);
