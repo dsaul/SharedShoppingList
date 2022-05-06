@@ -225,7 +225,7 @@ export default function StoreCard(props: IStoreCardProps) {
 						<Typography variant="subtitle1" component="h2" sx={{ fontSize: '24px', width: '100%' }}>
 							{props.storeName}
 						</Typography>
-						<IconButton aria-label="delete" onClick={onClickDelete}>
+						<IconButton aria-label="delete" onClick={onClickDelete} disabled={selectionModel.length == 0}>
 							<DeleteIcon />
 						</IconButton>
 						<IconButton aria-label="add" onClick={onClickAdd}>
