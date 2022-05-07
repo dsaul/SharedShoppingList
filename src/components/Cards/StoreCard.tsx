@@ -59,6 +59,21 @@ export default function StoreCard(props: IStoreCardProps) {
 		// 	width: 70
 		// },
 		{
+			field: 'actions',
+			headerName: 'Actions',
+			width: 50,
+			renderCell: (params: GridRenderCellParams) => {
+
+				//console.log('renderCell params',params);
+
+				return (
+					<IconButton onClick={() => { props.onEditItem((params.row as IShoppingListItem).uuid) }}>
+						<EditIcon />
+					</IconButton>
+				)
+			}
+		},
+		{
 			field: 'name',
 			headerName: 'Name',
 			width: 130,
@@ -77,7 +92,7 @@ export default function StoreCard(props: IStoreCardProps) {
 		{
 			field: 'isPicked',
 			headerName: 'Picked',
-			width: 130,
+			width: 70,
 			type: 'boolean',
 			editable: true,
 			valueSetter: (params: GridValueSetterParams) => {
@@ -92,18 +107,10 @@ export default function StoreCard(props: IStoreCardProps) {
 			}
 		},
 		{
-			field: 'actions',
-			headerName: 'Actions',
-			renderCell: (params: GridRenderCellParams) => {
-
-				//console.log('renderCell params',params);
-
-				return (
-					<IconButton onClick={() => { props.onEditItem((params.row as IShoppingListItem).uuid) }}>
-						<EditIcon />
-					</IconButton>
-				)
-			}
+			field: 'departments',
+			headerName: 'Department (s)',
+			width: 120,
+			editable: false,
 		},
 		{
 			field: 'stores',

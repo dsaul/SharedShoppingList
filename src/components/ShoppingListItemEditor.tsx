@@ -1,5 +1,6 @@
-import { FormControlLabel, Switch, TextField } from "@mui/material";
+import { DialogContentText, FormControlLabel, Switch, TextField } from "@mui/material";
 import { IShoppingListItem } from "../data/ShoppingListItem";
+import StringListEditor from "./StringListEditor";
 
 
 interface IShoppingListItemEditorProps {
@@ -29,13 +30,30 @@ export default function ShoppingListItemEditor(props: IShoppingListItemEditorPro
 		props.onModelChanged(payload);
 	};
 	
+	const onStoresChanged = (payload: string[]) => {
+		console.debug('onStoresChanged', payload);
+		const o: IShoppingListItem = {
+			...props.model,
+			stores: payload,
+		};
+		
+		props.onModelChanged(o);
+	};
+	
+	const onDepartmentsChanged = (payload: string[]) => {
+		console.debug('onDepartmentsChanged', payload);
+		const o: IShoppingListItem = {
+			...props.model,
+			departments: payload,
+		};
+		
+		props.onModelChanged(o);
+	};
+	
 	return (
 		<>
-			{/* <DialogContentText>
-				
-			</DialogContentText> */}
+			
 			<TextField
-				autoFocus
 				id="name"
 				label="Name"
 				type="text"
@@ -50,8 +68,22 @@ export default function ShoppingListItemEditor(props: IShoppingListItemEditorPro
 				sx={{marginTop: '10px'}}
 				
 			/>
-			
-
+			<DialogContentText style={{
+				marginTop: '10px',
+				color: "rgba(0, 0, 0, 0.87)",
+				fontWeight: "bold"
+			}}>
+				Stores
+			</DialogContentText>
+			<StringListEditor model={props.model.stores} onModelChanged={onStoresChanged} />
+			<DialogContentText style={{
+				marginTop: '10px',
+				color: "rgba(0, 0, 0, 0.87)",
+				fontWeight: "bold"
+			}}>
+				Departments
+			</DialogContentText>
+			<StringListEditor model={props.model.departments} onModelChanged={onDepartmentsChanged} />
 		</>
 	);
 }

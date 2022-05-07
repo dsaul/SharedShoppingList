@@ -118,7 +118,7 @@ export default function Dashboard(props: IDashboardProps) {
 		console.log('edit data model', editDataModel);
 	}
 
-
+	
 
 
 	const onDeleteItems = (uuids: string[]): void => {
