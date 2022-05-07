@@ -1,14 +1,12 @@
-import React from 'react';
-import style from './Navigation.module.css';
+// import style from './Navigation.module.css';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
+// import ListSubheader from '@mui/material/ListSubheader';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import InfoIcon from '@mui/icons-material/Info';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import MuiDrawer from '@mui/material/Drawer';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -50,7 +48,7 @@ interface INavigationProps {
 	performToggleDrawer: () => void;
 };
 
-export default function (props: INavigationProps) {
+export default function Navigation(props: INavigationProps) {
 	
 	
 	

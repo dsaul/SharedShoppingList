@@ -1,7 +1,5 @@
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-import { TypographyTypeMap } from '@mui/material/Typography/Typography'
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import styles from './Copyright.module.css';

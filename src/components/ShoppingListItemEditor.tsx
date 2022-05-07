@@ -1,6 +1,5 @@
-import { DialogContentText, TextField } from "@mui/material";
+import { FormControlLabel, Switch, TextField } from "@mui/material";
 import { IShoppingListItem } from "../data/ShoppingListItem";
-
 
 
 interface IShoppingListItemEditorProps {
@@ -8,22 +7,50 @@ interface IShoppingListItemEditorProps {
 	onModelChanged: (payload: IShoppingListItem) => void;
 };
 
-export default function (props: IShoppingListItemEditorProps) {
+export default function ShoppingListItemEditor(props: IShoppingListItemEditorProps) {
+	
+	const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		
+		const payload: IShoppingListItem = {
+			...props.model,
+			name: e.target.value,
+		};
+		
+		props.onModelChanged(payload);
+	};
+	
+	const onPickedChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+		
+		const payload: IShoppingListItem = {
+			...props.model,
+			isPicked: e.target.checked,
+		};
+		
+		props.onModelChanged(payload);
+	};
+	
 	return (
 		<>
-			<DialogContentText>
-				To subscribe to this website, please enter your email address here. We
-				will send updates occasionally.
-			</DialogContentText>
+			{/* <DialogContentText>
+				
+			</DialogContentText> */}
 			<TextField
 				autoFocus
-				margin="dense"
 				id="name"
-				label="Email Address"
-				type="email"
+				label="Name"
+				type="text"
 				fullWidth
 				variant="standard"
+				value={props.model.name}
+				onChange={onNameChange}
 			/>
+			<FormControlLabel
+				control={<Switch checked={props.model.isPicked} onChange={onPickedChanged} />}
+				label="Is Picked"
+				sx={{marginTop: '10px'}}
+				
+			/>
+			
 
 		</>
 	);

@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
-import style from './Dashboard.module.css';
-import { Routes, Route, Link as RouterLink } from "react-router-dom";
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
-import Chart from '../tmp/Chart';
-import Deposits from '../tmp/Deposits';
-import Orders from '../tmp/Orders';
-import Copyright from '../components/Copyright';
-
 import StoreCard from '../components/Cards/StoreCard';
 import ShoppingListItem, { IShoppingListItem } from '../data/ShoppingListItem';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import ShoppingListItemEditor from '../components/ShoppingListItemEditor';
 
 interface IDashboardProps {
@@ -55,7 +44,7 @@ export default function Dashboard(props: IDashboardProps) {
 	const [addDialogueOpen, setAddDialogueOpen] = React.useState(false);
 	const [deleteDialogueOpen, setDeleteDialogueOpen] = React.useState(false);
 	const [editDialogueOpen, setEditDialogueOpen] = React.useState(false);
-	
+
 	const [addDataModel, setAddDataModel] = React.useState(ShoppingListItem.MakeEmpty())
 	const [editDataModel, setEditDataModel] = React.useState(ShoppingListItem.MakeEmpty())
 
@@ -63,7 +52,7 @@ export default function Dashboard(props: IDashboardProps) {
 
 		setListItems((old): IShoppingListItem[] => {
 			return old.map((item: IShoppingListItem) => {
-				if (item.uuid != uuid)
+				if (item.uuid !== uuid)
 					return item;
 
 				return newValue;
@@ -75,11 +64,11 @@ export default function Dashboard(props: IDashboardProps) {
 	};
 
 
-	
-	
-	
-	
-	
+
+
+
+
+
 
 	const addNewItem = (): void => {
 		setAddDataModel(ShoppingListItem.MakeEmpty());
@@ -89,58 +78,72 @@ export default function Dashboard(props: IDashboardProps) {
 	const onAddDataModelChanged = (payload: IShoppingListItem) => {
 		console.log('onAddDataModelChanged', payload);
 	};
-	
-	const onClickCloseAddDialogue = () => {
+
+	const onClickCloseAddDialogueCancel = () => {
+		setAddDialogueOpen(false);
+		setAddDataModel(ShoppingListItem.MakeEmpty());
+	};
+
+	const onClickCloseAddDialogueAdd = () => {
 		setAddDialogueOpen(false);
 		console.log('add new', addDataModel);
 	};
-	
-	
-	
-	
 
-	
-	
+
+
+
+
 	const onEditItem = (uuid: string): void => {
-		//setEditDataModel();
+
+		const found = listItems.filter((o) => o.uuid === uuid);
+		if (found.length === 0)
+			return;
+		const first = found[0];
+
+		setEditDataModel(first);
 		setEditDialogueOpen(true);
 	}
-	
+
 	const onEditDataModelChanged = (payload: IShoppingListItem) => {
 		console.log('onEditDataModelChanged', payload);
 		setEditDataModel(payload);
 	};
-	
-	const onClickCloseEditDialogue = () => {
+
+	const onClickCloseEditDialogueCancel = () => {
+		setEditDialogueOpen(false);
+	}
+
+	const onClickCloseEditDialogueEdit = () => {
 		setEditDialogueOpen(false);
 		console.log('edit data model', editDataModel);
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
 	const onDeleteItems = (uuids: string[]): void => {
 		setDeleteDialogueOpen(true);
 	}
-	
-	const onClickCloseDeleteDialogue = () => {
+
+	const onClickCloseDeleteDialogueCancel = () => {
 		setDeleteDialogueOpen(false);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	const onClickCloseDeleteDialogueDelete = () => {
+		setDeleteDialogueOpen(false);
+		console.debug('Actually delete');
+	}
+
+
+
+
+
+
 	// Get unique stores.
 	const uniqueStores: string[] = [];
 	for (const item of listItems) {
 		for (const store of item.stores) {
-			if (uniqueStores.indexOf(store) == -1)
+			if (uniqueStores.indexOf(store) === -1)
 				uniqueStores.push(store);
 		}
 	}
@@ -150,37 +153,37 @@ export default function Dashboard(props: IDashboardProps) {
 	return (
 		<React.Fragment>
 
-			<Dialog open={addDialogueOpen} onClose={onClickCloseAddDialogue}>
+			<Dialog open={addDialogueOpen}>
 				<DialogTitle>Add Item</DialogTitle>
 				<DialogContent>
 					<ShoppingListItemEditor model={addDataModel} onModelChanged={onAddDataModelChanged} />
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={onClickCloseAddDialogue}>Cancel</Button>
-					<Button onClick={onClickCloseAddDialogue}>Subscribe</Button>
+					<Button onClick={onClickCloseAddDialogueCancel}>Cancel</Button>
+					<Button onClick={onClickCloseAddDialogueAdd}>Add</Button>
 				</DialogActions>
 			</Dialog>
-			
-			
-			<Dialog open={editDialogueOpen} onClose={onClickCloseEditDialogue}>
+
+
+			<Dialog open={editDialogueOpen}>
 				<DialogTitle>Edit Item</DialogTitle>
 				<DialogContent>
 					<ShoppingListItemEditor model={editDataModel} onModelChanged={onEditDataModelChanged} />
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={onClickCloseEditDialogue}>Cancel</Button>
-					<Button onClick={onClickCloseEditDialogue}>Subscribe</Button>
+					<Button onClick={onClickCloseEditDialogueCancel}>Cancel</Button>
+					<Button onClick={onClickCloseEditDialogueEdit}>Edit</Button>
 				</DialogActions>
 			</Dialog>
-			
-			<Dialog open={deleteDialogueOpen} onClose={onClickCloseDeleteDialogue}>
+
+			<Dialog open={deleteDialogueOpen}>
 				<DialogTitle>Delete Items</DialogTitle>
 				<DialogContent>
 					list of items
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={onClickCloseDeleteDialogue}>Cancel</Button>
-					<Button onClick={onClickCloseDeleteDialogue}>Subscribe</Button>
+					<Button onClick={onClickCloseDeleteDialogueCancel}>Cancel</Button>
+					<Button onClick={onClickCloseDeleteDialogueDelete}>Delete</Button>
 				</DialogActions>
 			</Dialog>
 

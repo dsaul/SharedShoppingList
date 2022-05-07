@@ -1,31 +1,22 @@
-import React, { MouseEventHandler, SyntheticEvent, useState } from 'react';
-import { Box, Typography, Button, IconButton, Stack } from '@mui/material';
+import React, { MouseEventHandler, useState } from 'react';
+import { Box, Typography, IconButton, Stack } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import {
 	DataGrid,
 	GridColDef,
-	GridValueGetterParams,
 	GridSelectionModel,
 	GridCallbackDetails,
 	GridRowModel,
-	GridRowId,
-	MuiBaseEvent,
 	GridCellParams,
-	GridEditCellPropsParams,
 	MuiEvent,
-	GridEventListener,
 	GridValueSetterParams,
-	GridEvents,
 	GridRenderCellParams,
 	GridFilterModel,
-	GridFilterOperator,
-	useGridApiRef,
 } from '@mui/x-data-grid';
 import {
 	IShoppingListItem
 } from '../../data/ShoppingListItem';
-import { PartyModeTwoTone } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -45,7 +36,7 @@ export default function StoreCard(props: IStoreCardProps) {
 
 	] as GridSelectionModel);
 
-
+	// eslint-disable-next-line
 	const [filterModel, setFilterModel] = useState({
 		items: [
 			{
@@ -175,7 +166,7 @@ export default function StoreCard(props: IStoreCardProps) {
 		event: MuiEvent<React.MouseEvent>,
 		details: GridCallbackDetails
 	): void => {
-		if (params.isEditable) {
+		if (params.isEditable && enableSingleClickAction) {
 
 			//console.log(event.target);
 
@@ -225,7 +216,7 @@ export default function StoreCard(props: IStoreCardProps) {
 						<Typography variant="subtitle1" component="h2" sx={{ fontSize: '24px', width: '100%' }}>
 							{props.storeName}
 						</Typography>
-						<IconButton aria-label="delete" onClick={onClickDelete} disabled={selectionModel.length == 0}>
+						<IconButton aria-label="delete" onClick={onClickDelete} disabled={selectionModel.length === 0}>
 							<DeleteIcon />
 						</IconButton>
 						<IconButton aria-label="add" onClick={onClickAdd}>
