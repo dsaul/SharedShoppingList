@@ -17,6 +17,7 @@ export default function Dashboard(props: IDashboardProps) {
 			isPicked: false,
 			stores: ['Superstore', 'Safeway'],
 			departments: ['Meats'],
+			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
 		},
 		{
 			uuid: '1313',
@@ -24,6 +25,7 @@ export default function Dashboard(props: IDashboardProps) {
 			isPicked: false,
 			stores: ['Superstore'],
 			departments: ['Papers'],
+			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
 		},
 		{
 			uuid: '1212',
@@ -31,6 +33,7 @@ export default function Dashboard(props: IDashboardProps) {
 			isPicked: false,
 			stores: ['Superstore'],
 			departments: ['Drinks'],
+			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
 		},
 		{
 			uuid: '354adsadsf454',
@@ -38,6 +41,7 @@ export default function Dashboard(props: IDashboardProps) {
 			isPicked: false,
 			stores: ['Safeway'],
 			departments: ['Candy'],
+			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
 		},
 	] as IShoppingListItem[]);
 
