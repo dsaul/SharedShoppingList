@@ -11,14 +11,14 @@ def get_database(app):
 	MONGO_DATABASE = os.environ['MONGO_DATABASE']
 	
 	# Provide the mongodb atlas url to connect python to mongodb using pymongo
-	CONNECTION_STRING = "mongodb://{MONGO_USERNAME}:MONGO_PASSWORD@{MONGO_HOST}:{MONGO_PORT}/".format(
+	CONNECTION_STRING = "mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/".format(
 		MONGO_USERNAME = MONGO_USERNAME,
 		MONGO_PASSWORD = MONGO_PASSWORD,
 		MONGO_HOST = MONGO_HOST,
 		MONGO_PORT = MONGO_PORT,
 	)
 	
-	app.logger.info("**************CONNECTION_STRING:"+CONNECTION_STRING)
+	print(CONNECTION_STRING)
 	
 	# Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
 	from pymongo import MongoClient
