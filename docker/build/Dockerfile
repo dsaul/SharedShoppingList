@@ -15,7 +15,7 @@ RUN update-ca-certificates
 RUN mkdir -p ~/.ssh && chmod 700 ~/.ssh
 RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-RUN git clone --depth 1 https://github.com/dsaul/DispatchPulse-CE -b master /source
+RUN git clone --depth 1 https://github.com/dsaul/SharedShoppingList.git -b master /source
 
 
 FROM nginx:latest
