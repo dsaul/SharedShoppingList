@@ -5,7 +5,7 @@ import db
 
 app = Flask(__name__)
 api = Api(app)
-dbh = db.get_database()
+dbh = db.get_database(app)
 
 class Items(Resource):
 	def get(self):

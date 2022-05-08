@@ -1,6 +1,6 @@
 import os
 
-def get_database():
+def get_database(app):
 	from pymongo import MongoClient
 	import pymongo
 	
@@ -18,7 +18,7 @@ def get_database():
 		MONGO_PORT = MONGO_PORT,
 	)
 	
-	print("**************CONNECTION_STRING:"+CONNECTION_STRING)
+	app.logger.info("**************CONNECTION_STRING:"+CONNECTION_STRING)
 	
 	# Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
 	from pymongo import MongoClient
