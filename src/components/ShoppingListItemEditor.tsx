@@ -31,7 +31,7 @@ export default function ShoppingListItemEditor(props: IShoppingListItemEditorPro
 	};
 	
 	const onStoresChanged = (payload: string[]) => {
-		console.debug('onStoresChanged', payload);
+		//console.debug('onStoresChanged', payload);
 		const o: IShoppingListItem = {
 			...props.model,
 			stores: payload,
@@ -41,7 +41,7 @@ export default function ShoppingListItemEditor(props: IShoppingListItemEditorPro
 	};
 	
 	const onDepartmentsChanged = (payload: string[]) => {
-		console.debug('onDepartmentsChanged', payload);
+		//console.debug('onDepartmentsChanged', payload);
 		const o: IShoppingListItem = {
 			...props.model,
 			departments: payload,

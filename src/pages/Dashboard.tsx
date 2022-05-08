@@ -47,6 +47,7 @@ export default function Dashboard(props: IDashboardProps) {
 
 	const [addDataModel, setAddDataModel] = React.useState(ShoppingListItem.MakeEmpty())
 	const [editDataModel, setEditDataModel] = React.useState(ShoppingListItem.MakeEmpty())
+	const [deleteItemsModel, setDeleteItemsModel] = React.useState([] as IShoppingListItem[]);
 
 	const onItemEditedInDataTable = (uuid: string, newValue: IShoppingListItem): void => {
 
@@ -105,7 +106,7 @@ export default function Dashboard(props: IDashboardProps) {
 	}
 
 	const onEditDataModelChanged = (payload: IShoppingListItem) => {
-		console.log('onEditDataModelChanged', payload);
+		//console.log('onEditDataModelChanged', payload);
 		setEditDataModel(payload);
 	};
 
@@ -115,23 +116,53 @@ export default function Dashboard(props: IDashboardProps) {
 
 	const onClickCloseEditDialogueEdit = () => {
 		setEditDialogueOpen(false);
-		console.log('edit data model', editDataModel);
+		//console.log('edit data model', editDataModel);
+		
+		setListItems((old): IShoppingListItem[] => {
+			return old.map((item: IShoppingListItem) => {
+				if (item.uuid !== editDataModel.uuid)
+					return item;
+
+				return editDataModel;
+			});
+		});
 	}
 
 	
 
 
 	const onDeleteItems = (uuids: string[]): void => {
+		
+		setDeleteItemsModel((old) => {
+			return listItems.filter((item) => {
+				return uuids.indexOf(item.uuid) !== -1;
+			})
+		});
+		
 		setDeleteDialogueOpen(true);
+		
+		
 	}
 
 	const onClickCloseDeleteDialogueCancel = () => {
 		setDeleteDialogueOpen(false);
+		setDeleteItemsModel(() => []);
 	}
 
 	const onClickCloseDeleteDialogueDelete = () => {
 		setDeleteDialogueOpen(false);
 		console.debug('Actually delete');
+		
+		setListItems((old: IShoppingListItem[]) => {
+			const justIds = deleteItemsModel.map((item) => item.uuid);
+			
+			const mod = old.filter((item) => {
+				return justIds.indexOf(item.uuid) == -1;
+			});
+			
+			return mod;
+		});
+		
 	}
 
 
@@ -179,7 +210,11 @@ export default function Dashboard(props: IDashboardProps) {
 			<Dialog open={deleteDialogueOpen}>
 				<DialogTitle>Delete Items</DialogTitle>
 				<DialogContent>
-					list of items
+					<ul>
+						{deleteItemsModel.map((item) => {
+							return (<li key={item.uuid}>{item.name}</li>)
+						})}
+					</ul>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={onClickCloseDeleteDialogueCancel}>Cancel</Button>

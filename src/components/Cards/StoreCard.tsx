@@ -151,52 +151,6 @@ export default function StoreCard(props: IStoreCardProps) {
 		return true;
 	}
 
-	// const onCellDoubleClick = (
-	// 	params: GridCellParams,
-	// 	event: MuiEvent<React.MouseEvent>,
-	// 	details: GridCallbackDetails
-	// ): void => {
-	// 	console.debug('onCellDoubleClick', params, event, details);
-	// }
-
-
-	// HACK: x-data-grid doesn't allow apirefs in the free version, however! on 
-	// mobile devices, you can't double click, which is required to start editing, 
-	// the proper way to do this is to call startCellEditMode, instead we're forced 
-	// to emit a fake double click when the user clicks, this starts the edit mode 
-	// on mobile. We disable the triggering for a single animation frame to stop 
-	// extra single click events from being triggered.
-	let enableSingleClickAction = true;
-
-	const onCellClick = (
-		params: GridCellParams,
-		event: MuiEvent<React.MouseEvent>,
-		details: GridCallbackDetails
-	): void => {
-		if (params.isEditable && enableSingleClickAction) {
-
-			//console.log(event.target);
-
-			enableSingleClickAction = false;
-
-			var clickEvent = new MouseEvent("dblclick", {
-				bubbles: true,
-				cancelable: true,
-				view: window
-			});
-			event.target.dispatchEvent(clickEvent);
-
-			requestAnimationFrame(() => {
-				enableSingleClickAction = true;
-			});
-
-			//apiRef.current.startCellEditMode({ id: params.id, field: params.field });
-		}
-
-		//console.debug('onCellClick', params, event, details);
-	};
-
-
 	const getRowId = (
 		model: GridRowModel
 	): string => {
@@ -247,7 +201,6 @@ export default function StoreCard(props: IStoreCardProps) {
 						disableSelectionOnClick={true}
 						filterModel={filterModel}
 						disableColumnFilter={true}
-						onCellClick={onCellClick}
 					/>
 				</Box>
 			</Paper>
