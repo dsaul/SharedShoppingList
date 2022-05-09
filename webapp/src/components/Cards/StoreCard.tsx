@@ -26,7 +26,7 @@ interface IStoreCardProps {
 	onItemEdited: (uuid: string, newValue: IShoppingListItem) => void;
 	onEditItem: (uuid: string) => void;
 	onDeleteItems: (uuids: string[]) => void;
-	addNewItem: () => void;
+	addNewItem: (storeName: string) => void;
 };
 
 
@@ -166,7 +166,7 @@ export default function StoreCard(props: IStoreCardProps) {
 	};
 
 	const onClickAdd: MouseEventHandler = (e) => {
-		props.addNewItem();
+		props.addNewItem(props.storeName);
 	};
 
 	return (
@@ -190,8 +190,8 @@ export default function StoreCard(props: IStoreCardProps) {
 					<DataGrid
 						rows={props.items}
 						columns={columns}
-						pageSize={5}
-						rowsPerPageOptions={[5]}
+						pageSize={50}
+						rowsPerPageOptions={[5,25,50,100,500]}
 						checkboxSelection
 						onSelectionModelChange={onSelectionModelChange}
 						editMode="cell"

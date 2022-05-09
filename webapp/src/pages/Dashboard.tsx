@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import StoreCard from '../components/Cards/StoreCard';
 import ShoppingListItem, { IShoppingListItem } from '../data/ShoppingListItem';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@mui/material';
 import ShoppingListItemEditor from '../components/ShoppingListItemEditor';
 import axios from 'axios';
 
@@ -12,41 +12,8 @@ interface IDashboardProps {
 export default function Dashboard(props: IDashboardProps) {
 
 	// State
-		
-	const [listItems, setListItems] = useState([
-		{
-			uuid: 'asd',
-			name: 'Chicken Tendies',
-			isPicked: false,
-			stores: ['Superstore', 'Safeway'],
-			departments: ['Meats'],
-			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
-		},
-		{
-			uuid: '1313',
-			name: 'Toilet Paper',
-			isPicked: false,
-			stores: ['Superstore'],
-			departments: ['Papers'],
-			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
-		},
-		{
-			uuid: '1212',
-			name: 'Fizzy Water',
-			isPicked: false,
-			stores: ['Superstore'],
-			departments: ['Drinks'],
-			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
-		},
-		{
-			uuid: '354adsadsf454',
-			name: 'BBQ Almonds',
-			isPicked: false,
-			stores: ['Safeway'],
-			departments: ['Candy'],
-			lastModifiedISO8601: '1900-01-01T00:00:00.000Z',
-		},
-	] as IShoppingListItem[]);
+
+	const [listItems, setListItems] = useState([] as IShoppingListItem[]);
 
 	const [addDialogueOpen, setAddDialogueOpen] = React.useState(false);
 	const [deleteDialogueOpen, setDeleteDialogueOpen] = React.useState(false);
@@ -58,7 +25,20 @@ export default function Dashboard(props: IDashboardProps) {
 
 	const onItemEditedInDataTable = (uuid: string, newValue: IShoppingListItem): void => {
 
+		let editInDataTableDebounceId: any = null;
 		setListItems((old): IShoppingListItem[] => {
+			
+			// Strict mode calls this function twice, so we wrap 
+			// the api call in this timeout code so that it doesn't 
+			// get called twice.
+			if (editInDataTableDebounceId) clearTimeout(editInDataTableDebounceId);
+			editInDataTableDebounceId = setTimeout(() => {
+				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${editDataModel.uuid}`, newValue);
+			}, 0);
+			
+			
+			
+			
 			return old.map((item: IShoppingListItem) => {
 				if (item.uuid !== uuid)
 					return item;
@@ -70,34 +50,56 @@ export default function Dashboard(props: IDashboardProps) {
 
 
 	};
-	
+
 	// Loading
-	
+
+	let getLoadItemsDebounceId: any = null;
 	const loadItems = (): void => {
-		axios.get('https://sharedshoppinglist-api.dsaul.ca/api/items/').then((response) => {
-			console.log('loadItems response', response);
-		});
+
+		if (getLoadItemsDebounceId) clearTimeout(getLoadItemsDebounceId);
+		getLoadItemsDebounceId = setTimeout(() => {
+			axios.get('https://sharedshoppinglist-api.dsaul.ca/api/items/').then((response) => {
+				console.log('loadItems response', response);
+
+				setListItems(response.data);
+			});
+		}, 0);
+
+
 	};
-	
+
 
 	// Init
 	useEffect(() => {
 		loadItems();
-		
-		
+
+
 	}, []);
-	
+
 
 
 	// Callbacks
+	
+	const addNewItemNoStore = (): void => {
+		const newModel = ShoppingListItem.MakeEmpty();
+		newModel.stores = ["Unsorted"];
+		setAddDataModel(newModel);
+		setAddDialogueOpen(true);
+	}
+	
+	const addNewItem = (storeName: string): void => {
 
-	const addNewItem = (): void => {
-		setAddDataModel(ShoppingListItem.MakeEmpty());
+		if (!storeName || storeName.length === 0)
+			storeName = "Unsorted";
+		const newModel = ShoppingListItem.MakeEmpty();
+		newModel.stores = [storeName];
+		setAddDataModel(newModel);
 		setAddDialogueOpen(true);
 	}
 
 	const onAddDataModelChanged = (payload: IShoppingListItem) => {
-		console.log('onAddDataModelChanged', payload);
+		//console.log('onAddDataModelChanged', payload);
+		setAddDataModel(payload);
 	};
 
 	const onClickCloseAddDialogueCancel = () => {
@@ -108,6 +110,23 @@ export default function Dashboard(props: IDashboardProps) {
 	const onClickCloseAddDialogueAdd = () => {
 		setAddDialogueOpen(false);
 		console.log('add new', addDataModel);
+
+		let postAddItemDebounceId: any = null;
+
+		setListItems((old): IShoppingListItem[] => {
+
+			// Strict mode calls this function twice, so we wrap 
+			// the api call in this timeout code so that it doesn't 
+			// get called twice.
+			if (postAddItemDebounceId) clearTimeout(postAddItemDebounceId);
+			postAddItemDebounceId = setTimeout(() => {
+				axios.post(`https://sharedshoppinglist-api.dsaul.ca/api/items/`, addDataModel);
+			}, 0);
+
+			return [...old, addDataModel];
+		});
+
+
 	};
 
 
@@ -137,8 +156,20 @@ export default function Dashboard(props: IDashboardProps) {
 	const onClickCloseEditDialogueEdit = () => {
 		setEditDialogueOpen(false);
 		//console.log('edit data model', editDataModel);
-		
+
+		let postEditItemDebounceId: any = null;
 		setListItems((old): IShoppingListItem[] => {
+
+			// Strict mode calls this function twice, so we wrap 
+			// the api call in this timeout code so that it doesn't 
+			// get called twice.
+			if (postEditItemDebounceId) clearTimeout(postEditItemDebounceId);
+			postEditItemDebounceId = setTimeout(() => {
+				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${editDataModel.uuid}`, editDataModel);
+			}, 0);
+
+
+
 			return old.map((item: IShoppingListItem) => {
 				if (item.uuid !== editDataModel.uuid)
 					return item;
@@ -148,20 +179,20 @@ export default function Dashboard(props: IDashboardProps) {
 		});
 	}
 
-	
+
 
 
 	const onDeleteItems = (uuids: string[]): void => {
-		
+
 		setDeleteItemsModel((old) => {
 			return listItems.filter((item) => {
 				return uuids.indexOf(item.uuid) !== -1;
 			})
 		});
-		
+
 		setDeleteDialogueOpen(true);
-		
-		
+
+
 	}
 
 	const onClickCloseDeleteDialogueCancel = () => {
@@ -172,17 +203,37 @@ export default function Dashboard(props: IDashboardProps) {
 	const onClickCloseDeleteDialogueDelete = () => {
 		setDeleteDialogueOpen(false);
 		console.debug('Actually delete');
-		
+
+		const deleteDebounceIds: Record<string, any> = {};
+
 		setListItems((old: IShoppingListItem[]) => {
 			const justIds = deleteItemsModel.map((item) => item.uuid);
-			
+
+			for (const id of justIds) {
+
+
+				// Strict mode calls this function twice, so we wrap 
+				// the api call in this timeout code so that it doesn't 
+				// get called twice.
+				if (deleteDebounceIds[id]) clearTimeout(deleteDebounceIds[id]);
+				deleteDebounceIds[id] = setTimeout(() => {
+					axios.delete(`https://sharedshoppinglist-api.dsaul.ca/api/items/${id}`).then((response) => {
+						console.log(id, 'deleted, response data', response);
+						loadItems();
+					});
+				}, 0);
+
+
+			}
+
 			const mod = old.filter((item) => {
 				return justIds.indexOf(item.uuid) == -1;
 			});
-			
+
 			return mod;
+
 		});
-		
+
 	}
 
 
@@ -255,6 +306,10 @@ export default function Dashboard(props: IDashboardProps) {
 					/>
 				);
 			})}
+			
+			<Paper elevation={0} square style={{textAlign: 'right', padding: '10px'}}>
+				<Button onClick={addNewItemNoStore}>Add Item</Button>
+			</Paper>
 		</React.Fragment>
 	);
 }
