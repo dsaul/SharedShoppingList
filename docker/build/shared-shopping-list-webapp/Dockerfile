@@ -29,4 +29,4 @@ COPY --from=build /source/webapp/build /usr/share/nginx/html/
 WORKDIR /etc/nginx/conf.d/
 COPY default.conf.template /default.conf.template
 
-CMD ["/bin/sh" , "-c" , "envsubst '$API_ROOT' < /default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh" , "-c" , "envsubst '$API_ROOT,$API_HOST_PORT' < /default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
