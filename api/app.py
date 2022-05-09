@@ -39,7 +39,7 @@ class SpecificItem(Resource):
 	
 	def put(self, uuid):
 		
-		app.logger.critical('PUT')
+		app.logger.critical('PUT {data}'.format(request.json))
 		
 		
 		itemsCollection = dbh["items"]
