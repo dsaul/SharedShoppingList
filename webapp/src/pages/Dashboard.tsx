@@ -40,7 +40,7 @@ export default function Dashboard(props: IDashboardProps) {
 				
 				//console.log('newValue',JSON.stringify(newValue));
 				
-				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${newValue.uuid}`, newValue)
+				axios.put(`/api/items/${newValue.uuid}`, newValue)
 					.then((response) => {
 						console.log(response);
 					})
@@ -65,7 +65,7 @@ export default function Dashboard(props: IDashboardProps) {
 
 		if (getLoadItemsDebounceId) clearTimeout(getLoadItemsDebounceId);
 		getLoadItemsDebounceId = setTimeout(() => {
-			axios.get('https://sharedshoppinglist-api.dsaul.ca/api/items/').then((response) => {
+			axios.get('/api/items/').then((response) => {
 				console.log('loadItems response', response);
 
 				setListItems(response.data);
@@ -129,7 +129,7 @@ export default function Dashboard(props: IDashboardProps) {
 			// get called twice.
 			if (postAddItemDebounceId) clearTimeout(postAddItemDebounceId);
 			postAddItemDebounceId = setTimeout(() => {
-				axios.post(`https://sharedshoppinglist-api.dsaul.ca/api/items/`, addDataModel);
+				axios.post(`/api/items/`, addDataModel);
 			}, 0);
 
 			return [...old, addDataModel];
@@ -176,7 +176,7 @@ export default function Dashboard(props: IDashboardProps) {
 			// get called twice.
 			if (postEditItemDebounceId) clearTimeout(postEditItemDebounceId);
 			postEditItemDebounceId = setTimeout(() => {
-				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${editDataModel.uuid}`, editDataModel);
+				axios.put(`/api/items/${editDataModel.uuid}`, editDataModel);
 			}, 0);
 
 
@@ -228,7 +228,7 @@ export default function Dashboard(props: IDashboardProps) {
 				// get called twice.
 				if (deleteDebounceIds[id]) clearTimeout(deleteDebounceIds[id]);
 				deleteDebounceIds[id] = setTimeout(() => {
-					axios.delete(`https://sharedshoppinglist-api.dsaul.ca/api/items/${id}`).then((response) => {
+					axios.delete(`/api/items/${id}`).then((response) => {
 						console.log(id, 'deleted, response data', response);
 						loadItems();
 					});
