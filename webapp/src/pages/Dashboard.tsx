@@ -33,7 +33,13 @@ export default function Dashboard(props: IDashboardProps) {
 			// get called twice.
 			if (editInDataTableDebounceId) clearTimeout(editInDataTableDebounceId);
 			editInDataTableDebounceId = setTimeout(() => {
-				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${editDataModel.uuid}`, newValue);
+				
+				console.log('newValue',JSON.stringify(newValue));
+				
+				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${editDataModel.uuid}`, newValue)
+					.then((response) => {
+						console.log(response);
+					})
 			}, 0);
 			
 			
