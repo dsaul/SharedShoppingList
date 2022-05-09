@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StoreCard from '../components/Cards/StoreCard';
 import ShoppingListItem, { IShoppingListItem } from '../data/ShoppingListItem';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import ShoppingListItemEditor from '../components/ShoppingListItemEditor';
+import axios from 'axios';
 
 interface IDashboardProps {
 
@@ -10,6 +11,8 @@ interface IDashboardProps {
 
 export default function Dashboard(props: IDashboardProps) {
 
+	// State
+		
 	const [listItems, setListItems] = useState([
 		{
 			uuid: 'asd',
@@ -67,13 +70,26 @@ export default function Dashboard(props: IDashboardProps) {
 
 
 	};
+	
+	// Loading
+	
+	const loadItems = (): void => {
+		axios.get('https://sharedshoppinglist-api.dsaul.ca/api/items/').then((response) => {
+			console.log('loadItems response', response);
+		});
+	};
+	
+
+	// Init
+	useEffect(() => {
+		loadItems();
+		
+		
+	}, []);
+	
 
 
-
-
-
-
-
+	// Callbacks
 
 	const addNewItem = (): void => {
 		setAddDataModel(ShoppingListItem.MakeEmpty());
