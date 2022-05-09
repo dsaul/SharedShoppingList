@@ -38,9 +38,9 @@ export default function Dashboard(props: IDashboardProps) {
 			if (editInDataTableDebounceId) clearTimeout(editInDataTableDebounceId);
 			editInDataTableDebounceId = setTimeout(() => {
 				
-				console.log('newValue',JSON.stringify(newValue));
+				//console.log('newValue',JSON.stringify(newValue));
 				
-				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${editDataModel.uuid}`, newValue)
+				axios.put(`https://sharedshoppinglist-api.dsaul.ca/api/items/${newValue.uuid}`, newValue)
 					.then((response) => {
 						console.log(response);
 					})

@@ -39,11 +39,10 @@ class SpecificItem(Resource):
 	
 	def put(self, uuid):
 		
-		app.logger.critical('PUT {data}'.format(data = request.json))
+		#app.logger.critical('PUT {uuid} {data}'.format(uuid=uuid, data = request.json))
 		
 		
 		itemsCollection = dbh["items"]
-		
 		itemsCollection.update_many({"uuid": uuid}, { "$set": request.json})
 		
 		return { "put": True }
