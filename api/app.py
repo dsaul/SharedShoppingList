@@ -5,7 +5,7 @@ import db
 from flask_cors import CORS
 
 app = Flask(__name__)
-app.debug = True
+#app.debug = True
 CORS(app)
 api = Api(app)
 dbh = db.get_database(app)
@@ -38,6 +38,9 @@ class SpecificItem(Resource):
 	
 	
 	def put(self, uuid):
+		
+		app.logger.critical('PUT')
+		
 		
 		itemsCollection = dbh["items"]
 		

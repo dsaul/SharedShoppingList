@@ -4,6 +4,7 @@ import ShoppingListItem, { IShoppingListItem } from '../data/ShoppingListItem';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@mui/material';
 import ShoppingListItemEditor from '../components/ShoppingListItemEditor';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 
 interface IDashboardProps {
 
@@ -24,7 +25,10 @@ export default function Dashboard(props: IDashboardProps) {
 	const [deleteItemsModel, setDeleteItemsModel] = React.useState([] as IShoppingListItem[]);
 
 	const onItemEditedInDataTable = (uuid: string, newValue: IShoppingListItem): void => {
-
+		
+		const now = DateTime.utc();
+		newValue.lastModifiedISO8601 = now.toISO();
+		
 		let editInDataTableDebounceId: any = null;
 		setListItems((old): IShoppingListItem[] => {
 			
@@ -41,9 +45,6 @@ export default function Dashboard(props: IDashboardProps) {
 						console.log(response);
 					})
 			}, 0);
-			
-			
-			
 			
 			return old.map((item: IShoppingListItem) => {
 				if (item.uuid !== uuid)
@@ -105,6 +106,8 @@ export default function Dashboard(props: IDashboardProps) {
 
 	const onAddDataModelChanged = (payload: IShoppingListItem) => {
 		//console.log('onAddDataModelChanged', payload);
+		const now = DateTime.utc();
+		payload.lastModifiedISO8601 = now.toISO();
 		setAddDataModel(payload);
 	};
 
@@ -152,6 +155,8 @@ export default function Dashboard(props: IDashboardProps) {
 
 	const onEditDataModelChanged = (payload: IShoppingListItem) => {
 		//console.log('onEditDataModelChanged', payload);
+		const now = DateTime.utc();
+		payload.lastModifiedISO8601 = now.toISO();
 		setEditDataModel(payload);
 	};
 
